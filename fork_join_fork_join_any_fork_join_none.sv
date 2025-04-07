@@ -96,3 +96,56 @@ Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Ap
                    5	Process-2 Started
                    6	Outside Fork-Join_delay
            V C S   S i m u l a t i o n   R e p o r t 
+//Example-6
+//we need to run 5 processes  inside any block like fork-join , fork_join_any, or fork_join_none such that simulation should exit after executing any 2 processes. how to write system verilog code for this
+
+module fork_join_any_example;
+
+  initial begin
+    int comp_proc = 0;
+
+    fork
+      begin
+        #3;
+        $display($time, "\tProcess-1 Completed");
+        comp_proc++;
+      end
+
+      begin
+        #5;
+        $display($time, "\tProcess-2 Completed");
+        comp_proc++;
+      end
+
+      begin
+        #7;
+        $display($time, "\tProcess-3 Completed");
+        comp_proc++;
+      end
+
+      begin
+        #9;
+        $display($time, "\tProcess-4 Completed");
+        comp_proc++;
+      end
+
+      begin
+        #11;
+        $display($time, "\tProcess-5 Completed");
+        comp_proc++;
+      end
+    join_any
+
+    // Wait for any 2 processes to complete
+    wait(comp_proc >= 2);
+
+    $display($time, "\tSimulation exits after any 2 processes complete");
+    $finish;
+  end
+
+endmodule
+//Output
+Compiler version U-2023.03-SP2_Full64; Runtime version U-2023.03-SP2_Full64;  Apr  7 09:20 2025
+                   3	Process-1 Completed
+                   5	Process-2 Completed
+                   5	Simulation exits after any 2 processes complete
